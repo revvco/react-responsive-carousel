@@ -25,6 +25,12 @@ class Thumbs extends Component {
     constructor(props) {
         super(props);
 
+        const currentPosition = - 0 * null + 'px';
+
+        const transformProp = CSSTranslate(currentPosition, props.axis);
+
+        const transitionTime = props.transitionTime + 'ms';
+
         this.state = {
             selectedItem: props.selectedItem,
             hasMount: false,
@@ -33,12 +39,25 @@ class Thumbs extends Component {
             visibleItems: 0,
             lastPosition: 0,
             showArrows: false,
-            images: this.getImages()
+            images: this.getImages(),
+            itemListStyles: {
+                'WebkitTransform': transformProp,
+                'MozTransform': transformProp,
+                'MsTransform': transformProp,
+                'OTransform': transformProp,
+                'transform': transformProp,
+                'msTransform': transformProp,
+                'WebkitTransitionDuration': transitionTime,
+                'MozTransitionDuration': transitionTime,
+                'MsTransitionDuration': transitionTime,
+                'OTransitionDuration': transitionTime,
+                'transitionDuration': transitionTime,
+                'msTransitionDuration': transitionTime
+            }
         }
     }
 
     componentDidMount(nextProps) {
-        console.log("testing setup");
         this.setupThumbs();
     }
 
@@ -201,8 +220,8 @@ class Thumbs extends Component {
             'transform',
             'msTransform'
         ].forEach((prop) => {
-            console.log("swiper no swiping");
-            this.itemsListRef.style[prop] = CSSTranslate(position, this.props.axis);
+            this.setState({ itemsListRef: { ...this.state.itemsListRef, [`${prop}`]: CSSTranslate(position, this.props.axis) } });
+            // this.itemsListRef.props.style[prop] = CSSTranslate(position, this.props.axis);
         });
     }
 
@@ -280,28 +299,28 @@ class Thumbs extends Component {
         // show right arrow
         const hasNext = this.state.showArrows && this.state.firstItem < this.state.lastPosition;
         // obj to hold the transformations and styles
-        let itemListStyles = {};
+        // let itemListStyles = {};
 
-        const currentPosition = - this.state.firstItem * this.state.itemSize + 'px';
+        // const currentPosition = - this.state.firstItem * this.state.itemSize + 'px';
 
-        const transformProp = CSSTranslate(currentPosition, this.props.axis);
+        // const transformProp = CSSTranslate(currentPosition, this.props.axis);
 
-        const transitionTime = this.props.transitionTime + 'ms';
+        // const transitionTime = this.props.transitionTime + 'ms';
 
-        itemListStyles = {
-                    'WebkitTransform': transformProp,
-                       'MozTransform': transformProp,
-                        'MsTransform': transformProp,
-                         'OTransform': transformProp,
-                          'transform': transformProp,
-                        'msTransform': transformProp,
-           'WebkitTransitionDuration': transitionTime,
-              'MozTransitionDuration': transitionTime,
-               'MsTransitionDuration': transitionTime,
-                'OTransitionDuration': transitionTime,
-                 'transitionDuration': transitionTime,
-               'msTransitionDuration': transitionTime
-        };
+        // itemListStyles = {
+        //             'WebkitTransform': transformProp,
+        //                'MozTransform': transformProp,
+        //                 'MsTransform': transformProp,
+        //                  'OTransform': transformProp,
+        //                   'transform': transformProp,
+        //                 'msTransform': transformProp,
+        //    'WebkitTransitionDuration': transitionTime,
+        //       'MozTransitionDuration': transitionTime,
+        //        'MsTransitionDuration': transitionTime,
+        //         'OTransitionDuration': transitionTime,
+        //          'transitionDuration': transitionTime,
+        //        'msTransitionDuration': transitionTime
+        // };
 
         return (
             <div className={klass.CAROUSEL(false)}>
@@ -315,7 +334,7 @@ class Thumbs extends Component {
                         onSwipeMove={this.onSwipeMove}
                         onSwipeStart={this.onSwipeStart}
                         onSwipeEnd={this.onSwipeEnd}
-                        style={itemListStyles}
+                        style={this.state.itemListStyles}
                         ref={this.setItemsListRef}>
                         { this.renderItems() }
                     </Swipe>
