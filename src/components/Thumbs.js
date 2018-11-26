@@ -38,6 +38,7 @@ class Thumbs extends Component {
     }
 
     componentDidMount(nextProps) {
+        console.log("testing setup");
         this.setupThumbs();
     }
 
@@ -200,6 +201,7 @@ class Thumbs extends Component {
             'transform',
             'msTransform'
         ].forEach((prop) => {
+            console.log("swiper no swiping");
             this.itemsListRef.style[prop] = CSSTranslate(position, this.props.axis);
         });
     }
